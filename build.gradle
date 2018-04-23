@@ -1,0 +1,49 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+mainClassName = 'chemtech.EmersonUPS.app.Application' 
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "org.snmp4j:snmp4j:2.5.0"
+	compile project('libraries:snmp-nagios-plugin')
+	
+	// https://mvnrepository.com/artifact/commons-cli/commons-cli
+	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+}
+
+version = '1.0.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+	baseName = 'emerson-ups-nagios-plugin'
+	version =  version
+	manifest {
+		attributes 'Main-Class': 'chemtech.EmersonUPS.app.Application'
+   }
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Emerson UPS Nagios Plugin',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'chemtech.EmersonUPS.app.Application'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

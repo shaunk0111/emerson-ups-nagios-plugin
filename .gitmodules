@@ -1,0 +1,3 @@
+[submodule "libraries/snmp-nagios-plugin"]
+	path = libraries/snmp-nagios-plugin
+	url = https://github.com/shaunk0111/snmp-nagios-plugin.git
