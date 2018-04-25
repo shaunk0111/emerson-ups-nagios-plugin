@@ -3,13 +3,15 @@ package chemtech.EmersonUPS.app;
 import chemtech.snmp.controllers.SnmpDataController;
 import chemtech.EmersonUPS.controllers.UPSController;
 import chemtech.EmersonUPS.models.UPSOidModel;
-import chemtech.snmp.controllers.SnmpConnectionContoller;
+import chemtech.snmp.controllers.SnmpConnectionController;
+import chemtech.snmp.controllers.SnmpConnectionJava;
+import chemtech.snmp.controllers.SnmpConnectionLinuxNative;
 import chemtech.snmp.controllers.SnmpConsoleController;
 import chemtech.snmp.models.SnmpConfigModel;
 
 public class Application {
 	
-	static SnmpConnectionContoller connectionController;
+	static SnmpConnectionController connectionController;
 	static SnmpDataController dataController;
 	static SnmpConsoleController consoleController;
 	static UPSController upsController;
@@ -19,14 +21,14 @@ public class Application {
 	public static void main(String[] args){
 				
 		try {
-			// Get arguments
+			// Get argumentsSnmpConnectionLinuxNative
 			cli = new CliOptions(args);
 			SnmpConfigModel config = new SnmpConfigModel(
 					cli.getHostname(),cli.getPort(),cli.getVerison(),
 					cli.getCommunity(),cli.getRetires(),cli.getTimeout());
 			
-			connectionController = new SnmpConnectionContoller(config);
-			connectionController.createConnection();
+			connectionController = new SnmpConnectionLinuxNative(config);
+			//connectionController.createConnection();
 			
 			dataController = new SnmpDataController(connectionController);
 			
