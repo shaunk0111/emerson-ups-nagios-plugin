@@ -1,5 +1,6 @@
 package chemtech.EmersonUPS.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,48 +37,19 @@ public final class UPSController {
 	}
 	
 	/**
-	 * List of value states
+	 * Push states into OID
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<Integer> getStatus() throws Exception {
+	public void pushStates() throws Exception {
 		
-		 return Arrays.asList(
-				checkPowerStatus(), 
-				checkLoadStatus(), 
-				checkTemperatureStatus() );
-	}
-	
-	/**
-	 * Check the state of the power
-	 * @param listOk
-	 * @param listWarning
-	 * @param listCritical
-	 * @return OK 0, Warning 1, Critical 2, Unknown 3
-	 * @throws Exception
-	 */
-	public int checkPowerStatus() throws Exception {
-		return dataController.getStatusByStrings(
-				UPSOidModel.systemStatus.getSymbol(), 
-				cli.getStatusList());
-	}
-	
-	/**
-	 * Check the state of the load
-	 * @return OK 0, Warning 1, Critical 2, Unknown 3
-	 * @throws Exception
-	 */
-	public int checkLoadStatus() throws Exception {
-		return dataController.getStatusByLimits(
-				UPSOidModel.outputLoad.getSymbol(), cli.getLoadLimits()); 
-	}
-	/**
-	 * Check the state of the temperature
-	 * @return OK 0, Warning 1, Critical 2, Unknown 3
-	 * @throws Exception
-	 */
-	public int checkTemperatureStatus() throws Exception {
-		return dataController.getStatusByLimits(
+		dataController.pushState(
+				UPSOidModel.outputVoltage.getSymbol(),cli.getOutputList());
+		dataController.pushState(
+				UPSOidModel.inputVoltage.getSymbol(),cli.getInputList());
+		dataController.pushState(
+				UPSOidModel.outputLoad.getSymbol(), cli.getLoadLimits());
+		dataController.pushState(
 				UPSOidModel.airInletTemperature.getSymbol(), cli.getTempLimits()); 
 	}
 		        

@@ -17,9 +17,10 @@ public final class CliOptions {
 	private static int retries;
 	private static int timeout;
 	private static int version;
-	private static String sloadLimits;
-	private static String stempLimits;
-	private static String sStatusLimits;
+	private static String sLoadLimits;
+	private static String sTempLimits;
+	private static String sInputLimits;
+	private static String sOutputLimits;
 	
 	public CliOptions(String[] args) throws ParseException {
 		
@@ -30,7 +31,8 @@ public final class CliOptions {
 		options.addOption("timeout", true, "time until timeout");
 		options.addOption("templimits", true, "limits of temperature lower to upper in format 0,0,0,0");
 		options.addOption("loadlimits", true, "limits of load lower to upper in format 0,0,0,0");
-		options.addOption("statuslimits", true, "limits of load lower to upper in format ok.ok,warn.warn,crit.crit");
+		options.addOption("inputlimits", true, "limits of input voltage in format 0,0,0,0");
+		options.addOption("outputlimits", true, "limits of input voltage in format 0,0,0,0");
 		
 		// Get arguments
 		CommandLine cmd = parser.parse(CliOptions.options, args);
@@ -40,9 +42,10 @@ public final class CliOptions {
 		retries = Integer.parseInt(cmd.getOptionValue("retries"));
 		timeout = Integer.parseInt(cmd.getOptionValue("timeout"));
 		version = SnmpConstants.version2c; // Application must run SNMP v2c
-		sloadLimits = cmd.getOptionValue("loadlimits");	
-		stempLimits = cmd.getOptionValue("templimits");
-		sStatusLimits = cmd.getOptionValue("statuslimits");
+		sLoadLimits = cmd.getOptionValue("loadlimits");	
+		sTempLimits = cmd.getOptionValue("templimits");
+		sInputLimits = cmd.getOptionValue("inputlimits");
+		sOutputLimits = cmd.getOptionValue("outputlimits");
 	}
 	//"Normal Operation,StartUp.Normal with Warning.Normal with Alarm,Abnormal Operation"
 	public String getHostname() {
@@ -70,15 +73,19 @@ public final class CliOptions {
 	}
 	
 	public String getTempLimits() {
-		return stempLimits; 
+		return sTempLimits; 
 	}
 	
 	public String getLoadLimits() {
-		return sloadLimits;
+		return sLoadLimits;
 	}
 	
-	public String getStatusList() {
-		return sStatusLimits;
+	public String getInputList() {
+		return sInputLimits;
+	}
+	
+	public String getOutputList() {
+		return sOutputLimits;
 	}
 			
 }

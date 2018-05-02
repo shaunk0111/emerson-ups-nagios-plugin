@@ -11,14 +11,15 @@ import chemtech.snmp.models.SnmpConfigModel;
 
 public class Application {
 	
-	static SnmpConnectionController connectionController;
-	static SnmpDataController dataController;
-	static SnmpConsoleController consoleController;
-	static UPSController upsController;
+	private static SnmpConnectionController connectionController;
+	private static SnmpDataController dataController;
+	private static SnmpConsoleController consoleController;
+	private static UPSController upsController;
+	private static CliOptions cli;
+	private static String systemName = "UPS";
 	
-	static CliOptions cli;
 	
-	public static void main(String[] args){
+	public static void main(String[] args){   
 				
 		try {
 			// Get argumentsSnmpConnectionLinuxNative
@@ -28,15 +29,15 @@ public class Application {
 					cli.getCommunity(),cli.getRetires(),cli.getTimeout());
 			
 			connectionController = new SnmpConnectionLinuxNative(config);
-			//connectionController.createConnection();
 			
 			dataController = new SnmpDataController(connectionController);
 			
 			upsController = new UPSController(dataController, cli, UPSOidModel.List());
-			upsController.retrieveData();	
+			upsController.retrieveData();
+			upsController.pushStates();
 			
-			consoleController = new SnmpConsoleController(connectionController,dataController);
-			consoleController.printOutputandExit(upsController.getStatus());
+			consoleController = new SnmpConsoleController(connectionController,dataController,systemName);
+			consoleController.printOutputandExit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
